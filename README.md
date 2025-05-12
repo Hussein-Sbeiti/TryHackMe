@@ -1,2 +1,0 @@
-# TryHackMe
-TryHackMe Writeups
