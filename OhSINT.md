@@ -142,4 +142,8 @@ Source code snippet from the WordPress page
 >A7: pennYDr0pper.!
 
 Conclusion  
-The OhSINT room offers a brilliant primer on how OSINT techniques can piece together digital breadcrumbs scattered across the web. From metadata in images to social media accounts, Wi-Fi networks, and even source code on blogs, it's impressive how much can be discovered with the right mindset and tools. This challenge not only teaches valuable reconnaissance skills but also serves as a reminder to be cautious about the information we leave publicly accessible online.
+The OhSINT room was honestly a blast. It felt more like solving a digital mystery than just answering questions. I got to dig into image metadata, hunt people down across platforms like Twitter and GitHub, trace Wi-Fi networks, and even snoop through blog source code for hidden info. Pretty wild how much you can find with just a single picture.
+
+This challenge really opened my eyes to the power of OSINT—and how careful people need to be with what they put out online. I learned a lot, had fun, and definitely feel more confident using tools like exiftool and sites like Wigle.net.
+
+Thanks for checking out my write-up! More to come soon 🙌
