@@ -201,7 +201,6 @@ Get root:
 ```bash
 sudo su -
 ```
-![Screenshot From 2025-05-12 21-18-11 - Edited](https://github.com/user-attachments/assets/890e3b8c-712e-4132-addc-eee6e519bf10)
 
 ---
 
