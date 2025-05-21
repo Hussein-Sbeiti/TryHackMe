@@ -36,6 +36,8 @@ So we’ve got a web server on port 80 and SSH. Classic setup.
 
 Navigating to the web page on port 80 shows a generic-looking login form.
 
+![Screenshot From 2025-05-19 16-23-13](https://github.com/user-attachments/assets/9598fd26-f1e3-459b-b6d3-614da166c045)
+
 Naturally, I tried:
 
 ```
@@ -53,8 +55,7 @@ admin' OR '1'='1
 
 … I didn’t get logged in — but I did get a juicy error message.
 
->Image 1  
->Image 2
+![Screenshot From 2025-05-19 16-30-08](https://github.com/user-attachments/assets/2b7f62c0-ae45-4a3d-8edb-f40e8e1602a2)
 
 That means the backend is likely doing something like:
 
@@ -76,9 +77,10 @@ hydra -L /usr/share/wordlists/SecLists/Usernames/xato-net-10-million-usernames.t
 
 (Use the actual path/params for the login form — this is just illustrative.)
 
-Eventually, we get a bunch of valid usernames. One that stood out: **Green**
+Eventually, we get a bunch of valid usernames. So since there are many I am going to use: **Green**
 
->Image 3
+![Screenshot From 2025-05-19 16-38-27](https://github.com/user-attachments/assets/6e88bea4-943e-4423-94f4-f36bdc8998a8)
+
 
 ---
 
@@ -101,7 +103,7 @@ The `--` comments out the rest, and `AND '1'='1'` makes the condition always tru
 
 And just like that... we're in.
 
->Image 4
+![Screenshot From 2025-05-19 16-48-14](https://github.com/user-attachments/assets/fffff33f-ed29-40d9-a5ba-10aefdaa6b29)
 
 ---
 
